@@ -18,11 +18,10 @@ export const UnityData = (props: {arg1: string|null}) => {
     console.log("arg",props.arg1)
 
     useEffect(() => {
-        console.log(props.arg1)
         if (props.arg1 != null){
             sendMessage("GameManager", "SetBearer", props.arg1)
         }
-      }, [props.arg1]);
+      }, [props.arg1, unityProvider]);
     
 
     return (

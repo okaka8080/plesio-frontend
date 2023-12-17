@@ -28,7 +28,6 @@ export default function Home() {
   useEffect(() => {
     if (provider !== null && auth === null) {
       setAuth(getAuth());
-      console.log(auth);
     }
   }, [auth, provider]);
 
@@ -38,10 +37,7 @@ export default function Home() {
         const credential = GithubAuthProvider.credentialFromResult(result);
         if (credential && credential.accessToken) {
           setToken(credential.accessToken);
-          console.log(credential);
-          console.log('token: ' + credential.accessToken);
         }
-        console.log(result.user.getIdToken());
         (async () => {
           let newtoken = await result.user.getIdToken();
           setAccessToken(newtoken);
