@@ -13,13 +13,14 @@ import {
 
 export default function Home() {
   const [token, setToken] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
   const [auth, setAuth] = useState<Auth | null>(null);
   const [provider, setProvider] = useState<GithubAuthProvider | null>(null);
 
   useEffect(() => {
     if (provider === null) {
       const newProvider = new GithubAuthProvider();
-      newProvider.addScope('repo'); // 既定ではユーザー自身のemailを取得するスコープしか付与されない。必要に応じてスコープを追加する
+      newProvider.addScope('repo'); 
       setProvider(newProvider);
     }
   }, [provider]);
@@ -37,18 +38,21 @@ export default function Home() {
         const credential = GithubAuthProvider.credentialFromResult(result);
         if (credential && credential.accessToken) {
           setToken(credential.accessToken);
+          console.log(credential);
           console.log('token: ' + credential.accessToken);
         }
-        console.log(result.user);
+        console.log(result.user.getIdToken());
+        (async () => {
+          let newtoken = await result.user.getIdToken();
+          setAccessToken(newtoken);
+        })();
       });
     }
   }, [auth, provider, token]);
 
-  
-
   return (
     <main >
-      <UnityData/>
+      {(auth != null) && <UnityData arg1={accessToken}/>}
     </main>
   )
 }
